@@ -20,8 +20,8 @@ RUN wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod
     && apt-get install -y dotnet-sdk-8.0 \
     && rm -rf /var/lib/apt/lists/*
 
-# Установка Node.js
-RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
+# Установка Node.js 20 вместо 18
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
