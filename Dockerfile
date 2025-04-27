@@ -12,12 +12,12 @@ RUN apt-get update && apt-get install -y \
     wget \
     && rm -rf /var/lib/apt/lists/*
 
-# Установка .NET SDK
+# Установка .NET SDK 8.0 вместо 7.0
 RUN wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
     && rm packages-microsoft-prod.deb \
     && apt-get update \
-    && apt-get install -y dotnet-sdk-7.0 \
+    && apt-get install -y dotnet-sdk-8.0 \
     && rm -rf /var/lib/apt/lists/*
 
 # Установка Node.js
@@ -33,8 +33,12 @@ RUN chown postgres:postgres /docker-entrypoint-initdb.d/pizza_dump.sql
 COPY init-db.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/init-db.sh
 
-# Компиляция бэкенда
+# Компиляция бэкенда - сначала копируем только файл проекта
 WORKDIR /app/backend
+COPY PizzaWebApp/PizzaWebApp.csproj ./
+RUN dotnet restore
+
+# Теперь копируем исходники и собираем
 COPY PizzaWebApp/ ./
 RUN dotnet publish -c Release -o /app/backend/publish
 
