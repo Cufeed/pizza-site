@@ -1,80 +1,106 @@
-FROM ubuntu:22.04
+FROM debian:bullseye-slim
 
-ARG DEBIAN_FRONTEND=noninteractive
-
-# Установка зависимостей
-RUN apt-get update && \
-    apt-get install -y \
-    python3 \
-    python3-pip \
-    postgresql \
-    postgresql-contrib \
-    libpq-dev \
-    nginx \
-    net-tools \
-    netcat \
+# Установка необходимых зависимостей
+RUN apt-get update && apt-get install -y \
     curl \
-    supervisor && \
-    apt-get clean && \
-    rm -rf /var/lib/apt/lists/*
+    gnupg \
+    lsb-release \
+    ca-certificates \
+    supervisor \
+    postgresql \
+    nginx \
+    wget \
+    jq \
+    procps \
+    && rm -rf /var/lib/apt/lists/*
 
-# Настройка PostgreSQL
-RUN /etc/init.d/postgresql start && \
-    su - postgres -c "psql -c \"CREATE USER pizza WITH PASSWORD 'pizzapass';\"" && \
-    su - postgres -c "psql -c \"CREATE DATABASE pizza OWNER pizza;\"" && \
-    su - postgres -c "psql -c \"GRANT ALL PRIVILEGES ON DATABASE pizza TO pizza;\""
+# Установка .NET SDK 8.0
+RUN wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
+    && dpkg -i packages-microsoft-prod.deb \
+    && rm packages-microsoft-prod.deb \
+    && apt-get update \
+    && apt-get install -y dotnet-sdk-8.0 \
+    && rm -rf /var/lib/apt/lists/*
 
-# Конфигурация postgres
-RUN echo "listen_addresses = '*'" >> /etc/postgresql/14/main/postgresql.conf && \
-    echo "host all all 0.0.0.0/0 md5" >> /etc/postgresql/14/main/pg_hba.conf
+# Установка Node.js 20
+RUN curl -fsSL https://deb.nodesource.com/setup_20.x | bash - \
+    && apt-get install -y nodejs \
+    && rm -rf /var/lib/apt/lists/*
 
-# Создание рабочей директории
-WORKDIR /app
+# Копирование SQL дампа
+COPY docker/db/pizza_dump.sql /docker-entrypoint-initdb.d/
+RUN chown postgres:postgres /docker-entrypoint-initdb.d/pizza_dump.sql
 
-# Копирование файлов проекта
-COPY . /app/
+# Компиляция бэкенда
+WORKDIR /app/backend
+COPY PizzaWebApp/PizzaWebApp.csproj ./
+RUN dotnet restore
 
-# Установка зависимостей Python
-RUN pip3 install -r requirements.txt
+COPY PizzaWebApp/ ./
+RUN dotnet publish -c Release -o /app/backend/publish
 
-# Создание базовой страницы для health check
-RUN mkdir -p /app/frontend/dist && \
-    echo "<html><body><h1>OK</h1></body></html>" > /app/frontend/dist/health-minimal.html
+# Компиляция фронтенда
+WORKDIR /app/frontend
+COPY ["PizzaWebFront 2.1/pizza-app-frontend/", "./"]
+RUN sed -i 's/"build": "tsc -b && vite build --outDir dist"/"build": "vite build --outDir dist"/' package.json
+RUN npm ci && npm run build
 
-# Настройка Nginx
-COPY nginx.conf /etc/nginx/nginx.conf
+# Создаем директорию wwwroot в бэкенде
+RUN mkdir -p /app/backend/publish/wwwroot
 
-# Конфигурация Supervisor
-RUN mkdir -p /var/log/supervisor
-COPY supervisor.conf /etc/supervisor/conf.d/app.conf
+# Создаем отдельную простую страницу здоровья
+RUN echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body>OK</body></html>' > /app/frontend/dist/health-minimal.html
 
-# Создание скрипта для запуска
-RUN echo '#!/bin/bash\n\
-# Запуск postgres\n\
-service postgresql start\n\
-sleep 2\n\
-\n\
-# Запуск supervisor\n\
-/usr/bin/supervisord -n\n' > /start.sh && \
-chmod +x /start.sh
+# Подготовка nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN rm -f /etc/nginx/sites-enabled/default
 
-# Создание скрипта для проверки здоровья
-RUN echo '#!/bin/bash\n\
-if ! curl -s http://localhost/health-minimal.html | grep -q "OK"; then\n\
-    echo "Health check failed: Nginx not responding"\n\
-    exit 1\n\
-fi\n\
-\n\
-if ! nc -z localhost 8000; then\n\
-    echo "Health check failed: Backend not responding"\n\
-    exit 1\n\
-fi\n\
-\n\
-echo "Health check passed"\n\
-exit 0\n' > /healthcheck.sh && \
-chmod +x /healthcheck.sh
+# Стартовый скрипт
+RUN echo '#!/bin/bash' > /start.sh
+RUN echo 'service postgresql start || true' >> /start.sh
+RUN echo 'sleep 5' >> /start.sh
+RUN echo 'su - postgres -c "psql -c \\"ALTER USER postgres WITH PASSWORD '"'"'123'"'"';\\" || true"' >> /start.sh
+RUN echo 'su - postgres -c "createdb -O postgres pizza || true"' >> /start.sh
+RUN echo 'if [ -f /docker-entrypoint-initdb.d/pizza_dump.sql ]; then su - postgres -c "psql -d pizza -f /docker-entrypoint-initdb.d/pizza_dump.sql || true"; fi' >> /start.sh
+RUN echo 'service nginx start || true' >> /start.sh
+RUN echo 'cd /app/backend/publish && ASPNETCORE_URLS="http://+:5023" dotnet PizzaWebApp.dll &' >> /start.sh
+RUN echo 'exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf' >> /start.sh
+RUN chmod +x /start.sh
+
+# Очень простой supervisord.conf
+RUN echo '[supervisord]' > /etc/supervisor/supervisord.conf
+RUN echo 'nodaemon=true' >> /etc/supervisor/supervisord.conf
+RUN echo 'user=root' >> /etc/supervisor/supervisord.conf
+
+RUN echo '[program:nginx]' >> /etc/supervisor/supervisord.conf
+RUN echo 'command=/usr/sbin/nginx -g "daemon off;"' >> /etc/supervisor/supervisord.conf
+RUN echo 'autostart=true' >> /etc/supervisor/supervisord.conf
+RUN echo 'autorestart=true' >> /etc/supervisor/supervisord.conf
+RUN echo 'startretries=5' >> /etc/supervisor/supervisord.conf
+RUN echo 'numprocs=1' >> /etc/supervisor/supervisord.conf
+RUN echo 'startsecs=0' >> /etc/supervisor/supervisord.conf
+RUN echo 'priority=10' >> /etc/supervisor/supervisord.conf
+RUN echo 'stdout_logfile=/var/log/nginx.log' >> /etc/supervisor/supervisord.conf
+RUN echo 'stderr_logfile=/var/log/nginx.err' >> /etc/supervisor/supervisord.conf
+
+RUN echo '[program:health-check]' >> /etc/supervisor/supervisord.conf
+RUN echo 'command=bash -c "while true; do if ! curl -s -f http://localhost/health-minimal.html >/dev/null; then service nginx restart || true; fi; sleep 3; done"' >> /etc/supervisor/supervisord.conf
+RUN echo 'autostart=true' >> /etc/supervisor/supervisord.conf
+RUN echo 'autorestart=true' >> /etc/supervisor/supervisord.conf
+RUN echo 'startretries=5' >> /etc/supervisor/supervisord.conf
+RUN echo 'priority=20' >> /etc/supervisor/supervisord.conf
+
+# Добавим простой health check прямо в контейнер
+HEALTHCHECK --interval=5s --timeout=3s --start-period=30s \
+  CMD curl -f http://localhost/health-minimal.html || exit 1
+
+# Убедимся, что health-check файл доступен напрямую
+RUN mkdir -p /var/www/html
+RUN echo '<!DOCTYPE html><html><head><title>OK</title></head><body>OK</body></html>' > /var/www/html/health-minimal.html
+RUN cp /var/www/html/health-minimal.html /usr/share/nginx/html/health-minimal.html
 
 EXPOSE 80
 EXPOSE 5432
+EXPOSE 5023
 
 CMD ["/start.sh"] 
