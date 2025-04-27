@@ -1,9 +1,8 @@
 [build]
 builder = "DOCKERFILE"
-dockerfilePath = "docker-compose.yml"
+dockerfilePath = "Dockerfile"
 
 [deploy]
-startCommand = "docker-compose up -d"
-sleepTime = "5s"
+numReplicas = 1
 healthcheckPath = "/"
-healthcheckTimeout = 10 
+healthcheckTimeout = 10
