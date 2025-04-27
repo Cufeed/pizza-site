@@ -45,6 +45,9 @@ COPY ["PizzaWebFront 2.1/pizza-app-frontend/", "./"]
 RUN sed -i 's/"build": "tsc -b && vite build --outDir dist"/"build": "vite build --outDir dist"/' package.json
 RUN npm ci && npm run build
 
+# Создаем директорию wwwroot в бэкенде
+RUN mkdir -p /app/backend/publish/wwwroot
+
 # Подготовка nginx
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 RUN rm -f /etc/nginx/sites-enabled/default
@@ -53,25 +56,20 @@ RUN echo '<!DOCTYPE html><html><head><title>OK</title></head><body>OK</body></ht
 
 # Стартовый скрипт
 RUN echo '#!/bin/bash' > /start.sh
-RUN echo 'mkdir -p /var/run/postgresql' >> /start.sh
-RUN echo 'chown -R postgres:postgres /var/run/postgresql' >> /start.sh
-RUN echo 'su - postgres -c "mkdir -p /var/lib/postgresql/data"' >> /start.sh
-RUN echo 'chmod 700 /var/lib/postgresql/data' >> /start.sh
-RUN echo 'su - postgres -c "pg_ctl -D /var/lib/postgresql/data initdb || true"' >> /start.sh
-RUN echo 'su - postgres -c "pg_ctl -D /var/lib/postgresql/data -o "-c listen_addresses=localhost" -w start || true"' >> /start.sh
-RUN echo 'sleep 5' >> /start.sh
-RUN echo 'su - postgres -c "createuser -s postgres || true"' >> /start.sh
-RUN echo 'su - postgres -c "psql -c \"ALTER USER postgres WITH PASSWORD '"'"'123'"'"';\\" || true"' >> /start.sh
+RUN echo 'service postgresql start || true' >> /start.sh
+RUN echo 'sleep 10' >> /start.sh
+RUN echo 'su - postgres -c "psql -c \\"ALTER USER postgres WITH PASSWORD '"'"'123'"'"';\\" || true"' >> /start.sh
 RUN echo 'su - postgres -c "createdb -O postgres pizza || true"' >> /start.sh
 RUN echo 'if [ -f /docker-entrypoint-initdb.d/pizza_dump.sql ]; then su - postgres -c "psql -d pizza -f /docker-entrypoint-initdb.d/pizza_dump.sql || true"; fi' >> /start.sh
 RUN echo 'nginx -g "daemon off;" &' >> /start.sh
-RUN echo 'cd /app/backend/publish && dotnet PizzaWebApp.dll &' >> /start.sh
+RUN echo 'cd /app/backend/publish && ASPNETCORE_URLS="http://+:5023" dotnet PizzaWebApp.dll &' >> /start.sh
 RUN echo 'exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf' >> /start.sh
 RUN chmod +x /start.sh
 
 # Очень простой supervisord.conf
 RUN echo '[supervisord]' > /etc/supervisor/supervisord.conf
 RUN echo 'nodaemon=true' >> /etc/supervisor/supervisord.conf
+RUN echo 'user=root' >> /etc/supervisor/supervisord.conf
 RUN echo '[program:health-check]' >> /etc/supervisor/supervisord.conf
 RUN echo 'command=bash -c "while true; do echo OK > /var/www/html/health-minimal.html; sleep 10; done"' >> /etc/supervisor/supervisord.conf
 RUN echo 'autorestart=true' >> /etc/supervisor/supervisord.conf
