@@ -25,20 +25,13 @@ RUN curl -fsSL https://deb.nodesource.com/setup_18.x | bash - \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
-# Настройка PostgreSQL
-USER postgres
-RUN /etc/init.d/postgresql start && \
-    psql --command "CREATE USER postgres WITH SUPERUSER PASSWORD '123';" && \
-    createdb -O postgres pizza
-USER root
-
 # Копирование SQL дампа
-COPY docker/db/pizza_dump.sql /tmp/
-RUN chown postgres:postgres /tmp/pizza_dump.sql
-USER postgres
-RUN /etc/init.d/postgresql start && \
-    psql -d pizza -f /tmp/pizza_dump.sql
-USER root
+COPY docker/db/pizza_dump.sql /docker-entrypoint-initdb.d/
+RUN chown postgres:postgres /docker-entrypoint-initdb.d/pizza_dump.sql
+
+# Создание скрипта инициализации базы данных
+COPY init-db.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/init-db.sh
 
 # Компиляция бэкенда
 WORKDIR /app/backend
