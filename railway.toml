@@ -6,4 +6,4 @@ dockerfilePath = "docker-compose.yml"
 startCommand = "docker-compose up -d"
 sleepTime = "5s"
 healthcheckPath = "/"
-healthcheckTimeout = "10" 
+healthcheckTimeout = 10 
