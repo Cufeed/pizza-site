@@ -34,6 +34,10 @@ RUN chown postgres:postgres /docker-entrypoint-initdb.d/pizza_dump.sql
 COPY init-db.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/init-db.sh
 
+# Копирование скрипта проверки работоспособности
+COPY healthcheck.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/healthcheck.sh
+
 # Компиляция бэкенда - сначала копируем только файл проекта
 WORKDIR /app/backend
 COPY PizzaWebApp/PizzaWebApp.csproj ./
@@ -57,8 +61,15 @@ RUN npm ci && npm run build
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 RUN rm /etc/nginx/sites-enabled/default || true
 
+# Создаем файл проверки работоспособности
+RUN mkdir -p /app/frontend/dist
+RUN echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body>OK</body></html>' > /app/frontend/dist/health.html
+
 # Настройка Supervisor для запуска всех сервисов
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
+
+# Установка HEALTHCHECK для Docker
+HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 CMD /usr/local/bin/healthcheck.sh
 
 EXPOSE 80
 EXPOSE 5023
