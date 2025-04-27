@@ -14,9 +14,16 @@ RUN apt-get update && apt-get install -y \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
-# Создаем простой файл health.html в директории nginx для проверки работоспособности
+# Создаем еще один health.html файл прямо в корневой директории nginx, чтобы он был доступен без настройки
 RUN mkdir -p /var/www/html
 RUN echo '<!DOCTYPE html><html><head><title>OK</title></head><body>OK</body></html>' > /var/www/html/health-minimal.html
+RUN echo '<!DOCTYPE html><html><head><title>OK</title></head><body>OK</body></html>' > /usr/share/nginx/html/health-minimal.html
+
+# Создаем дополнительный health.html в других возможных местах
+RUN mkdir -p /etc/nginx/html
+RUN echo 'OK' > /etc/nginx/html/health-minimal.html
+RUN echo 'OK' > /etc/nginx/health-minimal.html
+RUN echo 'OK' > /health-minimal.html
 
 # Установка .NET SDK 8.0 вместо 7.0
 RUN wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
@@ -77,10 +84,19 @@ RUN echo '<!DOCTYPE html><html><head><title>Health Check</title><meta http-equiv
 # Настройка Supervisor для запуска всех сервисов
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
 
+# Создаем стартовый скрипт для Railway
+RUN echo '#!/bin/bash' > /start.sh
+RUN echo 'echo "OK" > /tmp/health-minimal.html' >> /start.sh
+RUN echo 'if [ ! -d /usr/share/nginx/html ]; then mkdir -p /usr/share/nginx/html; fi' >> /start.sh
+RUN echo 'echo "OK" > /usr/share/nginx/html/health-minimal.html' >> /start.sh
+RUN echo 'nginx -g "daemon off;" &' >> /start.sh
+RUN echo 'exec /usr/bin/supervisord -c /etc/supervisor/conf.d/supervisord.conf' >> /start.sh
+RUN chmod +x /start.sh
+
 # Установка HEALTHCHECK для Docker
 HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 CMD /usr/local/bin/healthcheck.sh
 
 EXPOSE 80
 EXPOSE 5023
 
-CMD ["/usr/bin/supervisord", "-c", "/etc/supervisor/conf.d/supervisord.conf"] 
+CMD ["/start.sh"] 

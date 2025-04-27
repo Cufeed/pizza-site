@@ -5,10 +5,9 @@ set -x
 
 echo "[$(date)] Запуск скрипта инициализации БД"
 
-# Проверяем, запущен ли PostgreSQL
-echo "[$(date)] Запуск PostgreSQL"
-service postgresql start
-sleep 10
+# Ждем некоторое время, чтобы PostgreSQL успел запуститься
+echo "[$(date)] Ожидание запуска PostgreSQL"
+sleep 15
 
 # Простая инициализация без проверок
 echo "[$(date)] Установка пароля postgres"
