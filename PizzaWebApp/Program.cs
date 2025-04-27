@@ -6,6 +6,7 @@ using System.Configuration;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using Microsoft.Extensions.FileProviders;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -101,7 +102,23 @@ if (app.Environment.IsDevelopment())
 }
 
 // Добавляем обработку статических файлов перед другими middleware
+app.UseDefaultFiles();
 app.UseStaticFiles();
+
+// Добавляем дополнительный middleware для обработки SPA
+app.Use(async (context, next) =>
+{
+    await next();
+
+    // Если это запрос к несуществующему файлу API, то возвращаем index.html
+    if (context.Response.StatusCode == 404 && 
+        !context.Request.Path.Value.StartsWith("/api") && 
+        !Path.HasExtension(context.Request.Path.Value))
+    {
+        context.Request.Path = "/index.html";
+        await next();
+    }
+});
 
 // Добавляем простой health endpoint
 app.MapGet("/api/health", () => Results.Json(new { status = "UP" }));

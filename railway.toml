@@ -7,4 +7,3 @@ restartPolicyType = "ON_FAILURE"
 restartPolicyMaxRetries = 10
 healthcheckPath = "/health-minimal.html"
 healthcheckTimeout = 60
-startCommand = "/start.sh"

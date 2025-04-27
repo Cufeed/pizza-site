@@ -8,10 +8,7 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     supervisor \
     postgresql \
-    nginx \
     wget \
-    jq \
-    procps \
     && rm -rf /var/lib/apt/lists/*
 
 # Установка .NET SDK 8.0
@@ -39,42 +36,30 @@ RUN dotnet restore
 COPY PizzaWebApp/ ./
 RUN dotnet publish -c Release -o /app/backend/publish
 
+# Копируем health-check файл в wwwroot бэкенда
+RUN mkdir -p /app/backend/publish/wwwroot
+RUN echo '<!DOCTYPE html><html><head><title>OK</title></head><body>OK</body></html>' > /app/backend/publish/wwwroot/health-minimal.html
+
 # Компиляция фронтенда
 WORKDIR /app/frontend
 COPY ["PizzaWebFront 2.1/pizza-app-frontend/", "./"]
 RUN sed -i 's/"build": "tsc -b && vite build --outDir dist"/"build": "vite build --outDir dist"/' package.json
 RUN npm ci && npm run build
 
-# Создаем директорию wwwroot в бэкенде
-RUN mkdir -p /app/backend/publish/wwwroot
-
-# Подготовка nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
-RUN rm -f /etc/nginx/sites-enabled/default
-RUN mkdir -p /var/www/html
-RUN echo '<!DOCTYPE html><html><head><title>OK</title></head><body>OK</body></html>' > /var/www/html/health-minimal.html
+# Копируем собранный фронтенд в wwwroot бэкенда
+RUN cp -R dist/* /app/backend/publish/wwwroot/
 
 # Стартовый скрипт
 RUN echo '#!/bin/bash' > /start.sh
 RUN echo 'service postgresql start || true' >> /start.sh
-RUN echo 'sleep 10' >> /start.sh
+RUN echo 'sleep 5' >> /start.sh
 RUN echo 'su - postgres -c "psql -c \\"ALTER USER postgres WITH PASSWORD '"'"'123'"'"';\\" || true"' >> /start.sh
 RUN echo 'su - postgres -c "createdb -O postgres pizza || true"' >> /start.sh
 RUN echo 'if [ -f /docker-entrypoint-initdb.d/pizza_dump.sql ]; then su - postgres -c "psql -d pizza -f /docker-entrypoint-initdb.d/pizza_dump.sql || true"; fi' >> /start.sh
-RUN echo 'nginx -g "daemon off;" &' >> /start.sh
-RUN echo 'cd /app/backend/publish && ASPNETCORE_URLS="http://+:5023" dotnet PizzaWebApp.dll &' >> /start.sh
-RUN echo 'exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf' >> /start.sh
+RUN echo 'cd /app/backend/publish && ASPNETCORE_URLS="http://+:80" dotnet PizzaWebApp.dll' >> /start.sh
 RUN chmod +x /start.sh
 
-# Очень простой supervisord.conf
-RUN echo '[supervisord]' > /etc/supervisor/supervisord.conf
-RUN echo 'nodaemon=true' >> /etc/supervisor/supervisord.conf
-RUN echo 'user=root' >> /etc/supervisor/supervisord.conf
-RUN echo '[program:health-check]' >> /etc/supervisor/supervisord.conf
-RUN echo 'command=bash -c "while true; do echo OK > /var/www/html/health-minimal.html; sleep 10; done"' >> /etc/supervisor/supervisord.conf
-RUN echo 'autorestart=true' >> /etc/supervisor/supervisord.conf
-
-# Добавим простой health check прямо в контейнер
+# Добавим простой health check
 HEALTHCHECK --interval=10s --timeout=5s --start-period=30s \
   CMD curl -f http://localhost/health-minimal.html || exit 1
 
