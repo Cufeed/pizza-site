@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "NBHw1tamyW6lXHFI3MjRCp82jCZKvPZgzIEHDIABjeM=",
+  "Source": "PizzaWebApp",
+  "BasePath": "_content/PizzaWebApp",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
