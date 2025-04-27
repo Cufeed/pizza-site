@@ -8,7 +8,10 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     supervisor \
     postgresql \
+    nginx \
     wget \
+    jq \
+    procps \
     && rm -rf /var/lib/apt/lists/*
 
 # Установка .NET SDK 8.0
@@ -34,16 +37,7 @@ COPY PizzaWebApp/PizzaWebApp.csproj ./
 RUN dotnet restore
 
 COPY PizzaWebApp/ ./
-
-# Создаем файл специального middleware для обработки всех запросов
-RUN echo 'using Microsoft.AspNetCore.Builder;\n\npublic static class HealthCheckMiddlewareExtensions\n{\n    public static IApplicationBuilder UseHealthCheckMiddleware(this IApplicationBuilder builder)\n    {\n        return builder.Use(async (context, next) =>\n        {\n            if (context.Request.Path.Value.Contains("health") || context.Request.Path.Value == "/")\n            {\n                context.Response.StatusCode = 200;\n                await context.Response.WriteAsync("OK");\n                return;\n            }\n\n            await next();\n        });\n    }\n}' > HealthCheckMiddleware.cs
-
 RUN dotnet publish -c Release -o /app/backend/publish
-
-# Копируем health-check файл в wwwroot бэкенда
-RUN mkdir -p /app/backend/publish/wwwroot
-RUN echo '<!DOCTYPE html><html><head><title>OK</title></head><body>OK</body></html>' > /app/backend/publish/wwwroot/health-minimal.html
-RUN cp /app/backend/publish/wwwroot/health-minimal.html /app/backend/publish/wwwroot/index.html
 
 # Компиляция фронтенда
 WORKDIR /app/frontend
@@ -51,8 +45,15 @@ COPY ["PizzaWebFront 2.1/pizza-app-frontend/", "./"]
 RUN sed -i 's/"build": "tsc -b && vite build --outDir dist"/"build": "vite build --outDir dist"/' package.json
 RUN npm ci && npm run build
 
-# Копируем собранный фронтенд в wwwroot бэкенда
-RUN cp -R dist/* /app/backend/publish/wwwroot/
+# Создаем директорию wwwroot в бэкенде
+RUN mkdir -p /app/backend/publish/wwwroot
+
+# Создаем отдельную простую страницу здоровья
+RUN echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body>OK</body></html>' > /app/frontend/dist/health-minimal.html
+
+# Подготовка nginx
+COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN rm -f /etc/nginx/sites-enabled/default
 
 # Стартовый скрипт
 RUN echo '#!/bin/bash' > /start.sh
@@ -61,14 +62,45 @@ RUN echo 'sleep 5' >> /start.sh
 RUN echo 'su - postgres -c "psql -c \\"ALTER USER postgres WITH PASSWORD '"'"'123'"'"';\\" || true"' >> /start.sh
 RUN echo 'su - postgres -c "createdb -O postgres pizza || true"' >> /start.sh
 RUN echo 'if [ -f /docker-entrypoint-initdb.d/pizza_dump.sql ]; then su - postgres -c "psql -d pizza -f /docker-entrypoint-initdb.d/pizza_dump.sql || true"; fi' >> /start.sh
-RUN echo 'cd /app/backend/publish && ASPNETCORE_URLS="http://+:80" dotnet PizzaWebApp.dll' >> /start.sh
+RUN echo 'service nginx start || true' >> /start.sh
+RUN echo 'cd /app/backend/publish && ASPNETCORE_URLS="http://+:5023" dotnet PizzaWebApp.dll &' >> /start.sh
+RUN echo 'exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf' >> /start.sh
 RUN chmod +x /start.sh
 
-# Добавим простой health check
-HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
-  CMD curl -f http://localhost/health || exit 1
+# Очень простой supervisord.conf
+RUN echo '[supervisord]' > /etc/supervisor/supervisord.conf
+RUN echo 'nodaemon=true' >> /etc/supervisor/supervisord.conf
+RUN echo 'user=root' >> /etc/supervisor/supervisord.conf
+
+RUN echo '[program:nginx]' >> /etc/supervisor/supervisord.conf
+RUN echo 'command=/usr/sbin/nginx -g "daemon off;"' >> /etc/supervisor/supervisord.conf
+RUN echo 'autostart=true' >> /etc/supervisor/supervisord.conf
+RUN echo 'autorestart=true' >> /etc/supervisor/supervisord.conf
+RUN echo 'startretries=5' >> /etc/supervisor/supervisord.conf
+RUN echo 'numprocs=1' >> /etc/supervisor/supervisord.conf
+RUN echo 'startsecs=0' >> /etc/supervisor/supervisord.conf
+RUN echo 'priority=10' >> /etc/supervisor/supervisord.conf
+RUN echo 'stdout_logfile=/var/log/nginx.log' >> /etc/supervisor/supervisord.conf
+RUN echo 'stderr_logfile=/var/log/nginx.err' >> /etc/supervisor/supervisord.conf
+
+RUN echo '[program:health-check]' >> /etc/supervisor/supervisord.conf
+RUN echo 'command=bash -c "while true; do if ! curl -s -f http://localhost/health-minimal.html >/dev/null; then service nginx restart || true; fi; sleep 3; done"' >> /etc/supervisor/supervisord.conf
+RUN echo 'autostart=true' >> /etc/supervisor/supervisord.conf
+RUN echo 'autorestart=true' >> /etc/supervisor/supervisord.conf
+RUN echo 'startretries=5' >> /etc/supervisor/supervisord.conf
+RUN echo 'priority=20' >> /etc/supervisor/supervisord.conf
+
+# Добавим простой health check прямо в контейнер
+HEALTHCHECK --interval=5s --timeout=3s --start-period=30s \
+  CMD curl -f http://localhost/health-minimal.html || exit 1
+
+# Убедимся, что health-check файл доступен напрямую
+RUN mkdir -p /var/www/html
+RUN echo '<!DOCTYPE html><html><head><title>OK</title></head><body>OK</body></html>' > /var/www/html/health-minimal.html
+RUN cp /var/www/html/health-minimal.html /usr/share/nginx/html/health-minimal.html
 
 EXPOSE 80
 EXPOSE 5432
+EXPOSE 5023
 
 CMD ["/start.sh"] 

@@ -6,18 +6,6 @@ using System.Configuration;
 using System.Text;
 using System.Text.Json;
 using System.Text.Json.Serialization;
-using Microsoft.Extensions.FileProviders;
-using Microsoft.AspNetCore.Builder;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.AspNetCore.ResponseCompression;
-using Microsoft.AspNetCore.Mvc;
-using System.IO.Compression;
-using System.Linq;
-using Microsoft.AspNetCore.Http;
-using PizzaWebApp.Shared;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using PizzaWebApp.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -91,10 +79,6 @@ builder.Services.AddSwaggerGen();
 // Добавляем поддержку статических файлов
 builder.Services.AddDirectoryBrowser();
 
-// Add services to DI container
-builder.Services.AddScoped<ApiClient>();
-builder.Services.AddScoped<MenuService>();
-
 var app = builder.Build();
 
 // Создаем директорию wwwroot, если ее нет
@@ -109,23 +93,6 @@ if (!File.Exists("wwwroot/health-minimal.html"))
     File.WriteAllText("wwwroot/health-minimal.html", "<html><body>OK</body></html>");
 }
 
-// УСИЛЕННЫЙ HEALTH CHECK - отвечает на ЛЮБОЙ запрос со словом "health" или корневой путь
-app.Use(async (context, next) =>
-{
-    var path = context.Request.Path.Value?.ToLowerInvariant() ?? "";
-    
-    // Отвечаем OK на запросы к корню или содержащие "health"
-    if (path == "/" || path.Contains("health"))
-    {
-        context.Response.StatusCode = 200;
-        context.Response.ContentType = "text/plain";
-        await context.Response.WriteAsync("OK");
-        return;
-    }
-    
-    await next();
-});
-
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -134,32 +101,13 @@ if (app.Environment.IsDevelopment())
 }
 
 // Добавляем обработку статических файлов перед другими middleware
-app.UseDefaultFiles();
 app.UseStaticFiles();
 
-// Добавляем дополнительный middleware для обработки SPA
-app.Use(async (context, next) =>
-{
-    await next();
-
-    // Если это запрос к несуществующему файлу API, то возвращаем index.html
-    if (context.Response.StatusCode == 404 && 
-        !context.Request.Path.Value.StartsWith("/api") && 
-        !Path.HasExtension(context.Request.Path.Value))
-    {
-        context.Request.Path = "/index.html";
-        await next();
-    }
-});
-
 // Добавляем простой health endpoint
-app.MapGet("/api/health", () => Results.Ok("OK"));
+app.MapGet("/api/health", () => Results.Json(new { status = "UP" }));
 
 // Добавляем обработку для health-minimal.html напрямую
 app.MapGet("/health-minimal.html", () => Results.Content("<html><body>OK</body></html>", "text/html"));
-
-// Маппинг корневого пути
-app.MapGet("/", () => Results.Content("<html><body>OK</body></html>", "text/html"));
 
 app.UseHttpsRedirection();
 
