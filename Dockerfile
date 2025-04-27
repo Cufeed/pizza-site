@@ -11,6 +11,7 @@ RUN apt-get update && apt-get install -y \
     nginx \
     wget \
     jq \
+    procps \
     && rm -rf /var/lib/apt/lists/*
 
 # Установка .NET SDK 8.0 вместо 7.0
@@ -38,6 +39,10 @@ RUN chmod +x /usr/local/bin/init-db.sh
 COPY healthcheck.sh /usr/local/bin/
 RUN chmod +x /usr/local/bin/healthcheck.sh
 
+# Копирование скрипта мониторинга здоровья
+COPY health-monitor.sh /usr/local/bin/
+RUN chmod +x /usr/local/bin/health-monitor.sh
+
 # Компиляция бэкенда - сначала копируем только файл проекта
 WORKDIR /app/backend
 COPY PizzaWebApp/PizzaWebApp.csproj ./
@@ -63,7 +68,7 @@ RUN rm /etc/nginx/sites-enabled/default || true
 
 # Создаем файл проверки работоспособности
 RUN mkdir -p /app/frontend/dist
-RUN echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body>OK</body></html>' > /app/frontend/dist/health.html
+RUN echo '<!DOCTYPE html><html><head><title>Health Check</title><meta http-equiv="refresh" content="5"></head><body>Initializing...</body></html>' > /app/frontend/dist/health.html
 
 # Настройка Supervisor для запуска всех сервисов
 COPY supervisord.conf /etc/supervisor/conf.d/supervisord.conf
