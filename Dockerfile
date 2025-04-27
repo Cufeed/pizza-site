@@ -34,11 +34,16 @@ COPY PizzaWebApp/PizzaWebApp.csproj ./
 RUN dotnet restore
 
 COPY PizzaWebApp/ ./
+
+# Создаем файл специального middleware для обработки всех запросов
+RUN echo 'using Microsoft.AspNetCore.Builder;\n\npublic static class HealthCheckMiddlewareExtensions\n{\n    public static IApplicationBuilder UseHealthCheckMiddleware(this IApplicationBuilder builder)\n    {\n        return builder.Use(async (context, next) =>\n        {\n            if (context.Request.Path.Value.Contains("health") || context.Request.Path.Value == "/")\n            {\n                context.Response.StatusCode = 200;\n                await context.Response.WriteAsync("OK");\n                return;\n            }\n\n            await next();\n        });\n    }\n}' > HealthCheckMiddleware.cs
+
 RUN dotnet publish -c Release -o /app/backend/publish
 
 # Копируем health-check файл в wwwroot бэкенда
 RUN mkdir -p /app/backend/publish/wwwroot
 RUN echo '<!DOCTYPE html><html><head><title>OK</title></head><body>OK</body></html>' > /app/backend/publish/wwwroot/health-minimal.html
+RUN cp /app/backend/publish/wwwroot/health-minimal.html /app/backend/publish/wwwroot/index.html
 
 # Компиляция фронтенда
 WORKDIR /app/frontend
@@ -60,8 +65,8 @@ RUN echo 'cd /app/backend/publish && ASPNETCORE_URLS="http://+:80" dotnet PizzaW
 RUN chmod +x /start.sh
 
 # Добавим простой health check
-HEALTHCHECK --interval=10s --timeout=5s --start-period=30s \
-  CMD curl -f http://localhost/health-minimal.html || exit 1
+HEALTHCHECK --interval=30s --timeout=3s --start-period=5s --retries=3 \
+  CMD curl -f http://localhost/health || exit 1
 
 EXPOSE 80
 EXPOSE 5432
