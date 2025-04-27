@@ -10,8 +10,7 @@ services:
       POSTGRES_PASSWORD: 123
       POSTGRES_DB: pizza
     volumes:
-      - postgres-data:/var/lib/postgresql/data
-      # Инициализация базы данных из дампа
+      # Только инициализация базы данных из дампа
       - ./docker/db/pizza_dump.sql:/docker-entrypoint-initdb.d/pizza_dump.sql
     ports:
       - "5432:5432"
@@ -53,7 +52,4 @@ services:
       - backend
     ports:
       - "80:80"
-    restart: always
-
-volumes:
-  postgres-data: 
+    restart: always 
