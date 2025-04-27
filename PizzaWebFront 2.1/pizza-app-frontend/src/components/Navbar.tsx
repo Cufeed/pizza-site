@@ -1,8 +1,12 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
+import { useAuth } from '../contexts/AuthContext';
 
 const Navbar: React.FC = () => {
-  const [user, setUser] = useState(null);
+  const { user, isAuthenticated } = useAuth();
+  
+  // Получаем userType из user объекта
+  const userType = user?.userType?.toLowerCase();
 
   return (
     <nav className="bg-gray-800">
@@ -15,7 +19,7 @@ const Navbar: React.FC = () => {
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 {/* Navbar items */}
-                {user?.role === 'Admin' && (
+                {isAuthenticated && userType === 'admin' && (
                   <>
                     <Link to="/admin/register" className="text-gray-300 hover:text-white px-3 py-2 rounded-md text-sm font-medium">
                       Регистрация админа
