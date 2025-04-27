@@ -14,6 +14,10 @@ RUN apt-get update && apt-get install -y \
     procps \
     && rm -rf /var/lib/apt/lists/*
 
+# Создаем простой файл health.html в директории nginx для проверки работоспособности
+RUN mkdir -p /var/www/html
+RUN echo '<!DOCTYPE html><html><head><title>OK</title></head><body>OK</body></html>' > /var/www/html/health-minimal.html
+
 # Установка .NET SDK 8.0 вместо 7.0
 RUN wget https://packages.microsoft.com/config/debian/11/packages-microsoft-prod.deb -O packages-microsoft-prod.deb \
     && dpkg -i packages-microsoft-prod.deb \
