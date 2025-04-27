@@ -16,9 +16,9 @@ builder.Services.AddControllers().AddJsonOptions(options =>
     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
     //options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
     options.JsonSerializerOptions.Converters.Add(new JsonStringGuidConverter());
-    options.JsonSerializerOptions.PropertyNamingPolicy = null; // ������������ ����� �������
-    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull; // ����� null
-    options.JsonSerializerOptions.WriteIndented = true; // �������� ������
+    options.JsonSerializerOptions.PropertyNamingPolicy = null; // сохранить имена свойств
+    options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull; // убрать null
+    options.JsonSerializerOptions.WriteIndented = true; // отступы в json
 });
 builder.Services.AddHttpClient();
 builder.Services.AddCors(options =>
@@ -53,18 +53,44 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     });
 
 builder.Services.AddControllers();
-builder.Services.AddDbContext<PizzaDbContext>(options =>
-    options.UseNpgsql(builder.Configuration.GetConnectionString("PizzaConnection")));
+
+// Добавляем обработку БД только если строка подключения существует
+try
+{
+    var connectionString = builder.Configuration.GetConnectionString("PizzaConnection");
+    if (!string.IsNullOrEmpty(connectionString))
+    {
+        builder.Services.AddDbContext<PizzaDbContext>(options =>
+            options.UseNpgsql(connectionString));
+    }
+    else
+    {
+        Console.WriteLine("ВНИМАНИЕ: Строка подключения к БД не найдена. БД не будет подключена.");
+    }
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Ошибка при настройке подключения к БД: {ex.Message}");
+}
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+// Добавляем поддержку статических файлов
+builder.Services.AddDirectoryBrowser();
+
 var app = builder.Build();
 
-var connectionString = builder.Configuration.GetConnectionString("PizzaConnection");
-if (string.IsNullOrEmpty(connectionString))
+// Создаем директорию wwwroot, если ее нет
+if (!Directory.Exists("wwwroot"))
 {
-    throw new InvalidOperationException("Connection string not found.");
+    Directory.CreateDirectory("wwwroot");
+}
+
+// Создаем простой health-check файл 
+if (!File.Exists("wwwroot/health-minimal.html"))
+{
+    File.WriteAllText("wwwroot/health-minimal.html", "<html><body>OK</body></html>");
 }
 
 // Configure the HTTP request pipeline.
@@ -73,6 +99,15 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+// Добавляем обработку статических файлов перед другими middleware
+app.UseStaticFiles();
+
+// Добавляем простой health endpoint
+app.MapGet("/api/health", () => Results.Json(new { status = "UP" }));
+
+// Добавляем обработку для health-minimal.html напрямую
+app.MapGet("/health-minimal.html", () => Results.Content("<html><body>OK</body></html>", "text/html"));
 
 app.UseHttpsRedirection();
 
