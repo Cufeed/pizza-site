@@ -1,8 +1,9 @@
 [build]
-builder = "nixpacks"
+builder = "DOCKERFILE"
+dockerfilePath = "Dockerfile.backend"
 
 [deploy]
-startCommand = "docker-compose up"
+startCommand = "dotnet PizzaWebApp.dll"
 healthcheckPath = "/health"
 healthcheckTimeout = 100
 restartPolicyType = "on_failure"
