@@ -19,26 +19,26 @@ const CartItem: React.FC<CartItemProps> = ({ menuItem, quantity, updateQuantity 
         <img src={imageUrl} alt={name} className="w-16 h-16 object-cover rounded" />
         <div className="ml-4">
           <h3 className="font-medium">{name}</h3>
-          <div className="flex justify-between items-center">
-            <span className="text-lg font-bold text-red-700">
+            <div className="flex justify-between items-center">
+              <span className="text-lg font-bold text-red-700">
               {price} ₽
-            </span>
-            <div className="flex items-center space-x-2">
-              <button
-                onClick={() => updateQuantity(quantity - 1)}
-                className="text-red-700 hover:text-red-800"
-              >
-                -
-              </button>
-              <span className="mx-2">{quantity}</span>
-              <button
-                onClick={() => updateQuantity(quantity + 1)}
-                className="text-red-700 hover:text-red-800"
-              >
-                +
-              </button>
-            </div>
-          </div>
+              </span>
+              <div className="flex items-center space-x-2">
+                <button
+                  onClick={() => updateQuantity(quantity - 1)}
+                  className="text-red-700 hover:text-red-800"
+                >
+                  -
+                </button>
+                <span className="mx-2">{quantity}</span>
+                <button
+                  onClick={() => updateQuantity(quantity + 1)}
+                  className="text-red-700 hover:text-red-800"
+                >
+                  +
+                </button>
+              </div>
+            </div> 
         </div>
       </div>
     </div>

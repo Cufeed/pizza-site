@@ -8,6 +8,7 @@ RUN apt-get update && apt-get install -y \
     ca-certificates \
     supervisor \
     postgresql \
+    postgresql-contrib \
     nginx \
     wget \
     jq \
@@ -52,17 +53,21 @@ RUN mkdir -p /app/backend/publish/wwwroot
 RUN echo '<!DOCTYPE html><html><head><title>Health Check</title></head><body>OK</body></html>' > /app/frontend/dist/health-minimal.html
 
 # Подготовка nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+RUN mkdir -p /var/log/nginx
+RUN touch /var/log/nginx/error.log /var/log/nginx/access.log
+RUN chown -R www-data:www-data /var/log/nginx
+
+COPY nginx.conf /etc/nginx/nginx.conf
 RUN rm -f /etc/nginx/sites-enabled/default
 
 # Стартовый скрипт
 RUN echo '#!/bin/bash' > /start.sh
-RUN echo 'service postgresql start || true' >> /start.sh
+RUN echo 'service postgresql start' >> /start.sh
 RUN echo 'sleep 5' >> /start.sh
-RUN echo 'su - postgres -c "psql -c \\"ALTER USER postgres WITH PASSWORD '"'"'123'"'"';\\" || true"' >> /start.sh
-RUN echo 'su - postgres -c "createdb -O postgres pizza || true"' >> /start.sh
-RUN echo 'if [ -f /docker-entrypoint-initdb.d/pizza_dump.sql ]; then su - postgres -c "psql -d pizza -f /docker-entrypoint-initdb.d/pizza_dump.sql || true"; fi' >> /start.sh
-RUN echo 'service nginx start || true' >> /start.sh
+RUN echo 'su - postgres -c "psql -c \\"ALTER USER postgres WITH PASSWORD '"'"'123'"'"';\\""' >> /start.sh
+RUN echo 'su - postgres -c "createdb -O postgres pizza"' >> /start.sh
+RUN echo 'su - postgres -c "pg_restore -d pizza /docker-entrypoint-initdb.d/pizza_dump.sql || psql -d pizza -f /docker-entrypoint-initdb.d/pizza_dump.sql"' >> /start.sh
+RUN echo 'service nginx start' >> /start.sh
 RUN echo 'cd /app/backend/publish && ASPNETCORE_URLS="http://+:5023" dotnet PizzaWebApp.dll &' >> /start.sh
 RUN echo 'exec /usr/bin/supervisord -n -c /etc/supervisor/supervisord.conf' >> /start.sh
 RUN chmod +x /start.sh
@@ -84,7 +89,7 @@ RUN echo 'stdout_logfile=/var/log/nginx.log' >> /etc/supervisor/supervisord.conf
 RUN echo 'stderr_logfile=/var/log/nginx.err' >> /etc/supervisor/supervisord.conf
 
 RUN echo '[program:health-check]' >> /etc/supervisor/supervisord.conf
-RUN echo 'command=bash -c "while true; do if ! curl -s -f http://localhost/health-minimal.html >/dev/null; then service nginx restart || true; fi; sleep 3; done"' >> /etc/supervisor/supervisord.conf
+RUN echo 'command=bash -c "while true; do if ! curl -s -f http://localhost/health-minimal.html >/dev/null; then service nginx restart; fi; sleep 3; done"' >> /etc/supervisor/supervisord.conf
 RUN echo 'autostart=true' >> /etc/supervisor/supervisord.conf
 RUN echo 'autorestart=true' >> /etc/supervisor/supervisord.conf
 RUN echo 'startretries=5' >> /etc/supervisor/supervisord.conf
