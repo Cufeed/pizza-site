@@ -1,10 +1,12 @@
 [build]
-builder = "DOCKERFILE"
-dockerfilePath = "Dockerfile"
+builder = "nixpacks"
 
 [deploy]
-restartPolicyType = "ON_FAILURE"
+startCommand = "docker-compose up"
+healthcheckPath = "/health"
+healthcheckTimeout = 100
+restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
-healthcheckPath = "/health-minimal.html"
-healthcheckTimeout = 30
-startCommand = "/start.sh"
+
+[deploy.env]
+ASPNETCORE_ENVIRONMENT = "Production"
