@@ -127,7 +127,30 @@ RUN dotnet publish "PizzaWebApp.csproj" -c Release -o /app/publish
 # Создаем простое приложение для health check
 FROM build AS healthcheck
 WORKDIR /healthcheck
-COPY ["backend_branch/HealthCheck.cs", "./Program.cs"]
+
+# Создаем файл для health check
+RUN echo 'using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+
+namespace HealthCheck
+{
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            var builder = WebApplication.CreateBuilder(args);
+            builder.WebHost.UseUrls("http://+:8081");
+            
+            var app = builder.Build();
+            
+            app.MapGet("/health", () => "Healthy");
+            
+            app.Run();
+        }
+    }
+}' > ./Program.cs
 
 # Создаем проект для health check
 RUN dotnet new web -o . --no-restore
