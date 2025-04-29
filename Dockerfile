@@ -42,9 +42,16 @@ RUN dotnet publish -c Release -o /app/backend/publish
 
 # Компиляция фронтенда
 WORKDIR /app/frontend
+COPY ["PizzaWebFront 2.1/pizza-app-frontend/package.json", "PizzaWebFront 2.1/pizza-app-frontend/package-lock.json", "./"]
+RUN npm ci
+
 COPY ["PizzaWebFront 2.1/pizza-app-frontend/", "./"]
-RUN sed -i 's/"build": "tsc -b && vite build --outDir dist"/"build": "vite build --outDir dist"/' package.json
-RUN npm ci && npm run build
+
+# Создаем .env файл для конфигурации API URL
+ARG VITE_API_URL
+ENV VITE_API_URL=${VITE_API_URL}
+
+RUN npm run build
 
 # Создаем директорию wwwroot в бэкенде
 RUN mkdir -p /app/backend/publish/wwwroot
