@@ -124,8 +124,20 @@ RUN dotnet build "PizzaWebApp.csproj" -c Release -o /app/build
 FROM build AS publish
 RUN dotnet publish "PizzaWebApp.csproj" -c Release -o /app/publish
 
+# Создаем простое приложение для health check
+FROM build AS healthcheck
+WORKDIR /healthcheck
+COPY ["backend_branch/HealthCheck.cs", "./Program.cs"]
+
+# Создаем проект для health check
+RUN dotnet new web -o . --no-restore
+RUN dotnet publish -c Release -o /healthcheck/publish
+
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
+
+# Устанавливаем curl для проверки health
+RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
 
 # Создаем директорию для DataProtection
 RUN mkdir -p /app/DataProtection-Keys && chown -R 1001:1001 /app/DataProtection-Keys
@@ -133,7 +145,9 @@ RUN mkdir -p /app/DataProtection-Keys && chown -R 1001:1001 /app/DataProtection-
 # Создаем wwwroot директорию
 RUN mkdir -p /app/wwwroot
 
+# Копируем приложение
 COPY --from=publish /app/publish .
+COPY --from=healthcheck /healthcheck/publish /healthcheck
 
 # Устанавливаем переменные окружения
 ENV ASPNETCORE_ENVIRONMENT=Production
@@ -143,9 +157,14 @@ ENV ASPNETCORE_DATA_PROTECTION_KEYSDIR=/app/DataProtection-Keys
 # Создаем скрипт для запуска
 RUN echo '#!/bin/sh' > /app/start.sh && \
     echo 'export ASPNETCORE_URLS="http://+:${PORT:-8080}"' >> /app/start.sh && \
-    echo 'dotnet PizzaWebApp.dll' >> /app/start.sh && \
+    echo 'cd /healthcheck && dotnet HealthCheck.dll &' >> /app/start.sh && \
+    echo 'cd /app && dotnet PizzaWebApp.dll' >> /app/start.sh && \
     chmod +x /app/start.sh
 
 EXPOSE 8080
+EXPOSE 8081
+
+HEALTHCHECK --interval=5s --timeout=3s --start-period=30s \
+  CMD curl -f http://localhost:8081/health || exit 1
 
 ENTRYPOINT ["/app/start.sh"] 

@@ -5,6 +5,7 @@ builder = "DOCKERFILE"
 startCommand = "/app/start.sh"
 healthcheckPath = "/health"
 healthcheckTimeout = 100
+healthcheckPort = 8081
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
 
