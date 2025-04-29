@@ -1,6 +1,5 @@
 [build]
 builder = "DOCKERFILE"
-dockerfilePath = "Dockerfile.backend"
 
 [deploy]
 startCommand = "dotnet PizzaWebApp.dll"
@@ -11,3 +10,10 @@ restartPolicyMaxRetries = 10
 
 [deploy.env]
 ASPNETCORE_ENVIRONMENT = "Production"
+
+# Указываем, какой Dockerfile использовать для каждого сервиса
+[services.backend]
+dockerfilePath = "Dockerfile.backend"
+
+[services.frontend]
+dockerfilePath = "Dockerfile.frontend"
