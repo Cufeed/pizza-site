@@ -136,10 +136,16 @@ RUN mkdir -p /app/wwwroot
 COPY --from=publish /app/publish .
 
 # Устанавливаем переменные окружения
-ENV ASPNETCORE_URLS=http://+:5023
 ENV ASPNETCORE_ENVIRONMENT=Production
 ENV ASPNETCORE_DATA_PROTECTION_PATH=/app/DataProtection-Keys
+ENV ASPNETCORE_DATA_PROTECTION_KEYSDIR=/app/DataProtection-Keys
+
+# Создаем скрипт для запуска
+RUN echo '#!/bin/sh' > /app/start.sh && \
+    echo 'export ASPNETCORE_URLS="http://+:${PORT:-5023}"' >> /app/start.sh && \
+    echo 'dotnet PizzaWebApp.dll' >> /app/start.sh && \
+    chmod +x /app/start.sh
 
 EXPOSE 5023
 
-ENTRYPOINT ["dotnet", "PizzaWebApp.dll"] 
+ENTRYPOINT ["/app/start.sh"] 
