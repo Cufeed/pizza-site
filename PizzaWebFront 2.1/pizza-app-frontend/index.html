@@ -3,7 +3,15 @@
 
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Pizza App</title>
+  <script>
+    // Выводим API URL в консоль при загрузке
+    window.addEventListener('DOMContentLoaded', () => {
+      console.log('Загрузка приложения с API URL:', import.meta.env.VITE_API_URL);
+    });
+  </script>
 </head>
 
 <body>

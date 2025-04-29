@@ -4,11 +4,26 @@ WORKDIR /app
 COPY ["PizzaWebFront 2.1/pizza-app-frontend/package*.json", "./"]
 RUN npm ci
 COPY ["PizzaWebFront 2.1/pizza-app-frontend/", "./"]
+
+# Устанавливаем API URL для сборки
+ARG VITE_API_URL=https://backend-production-af78.up.railway.app/api
+ENV VITE_API_URL=$VITE_API_URL
+
+# Вывод URL для проверки
+RUN echo "Building with API URL: $VITE_API_URL"
+
+# Создаем .env файл с явным указанием API URL
+RUN echo "VITE_API_URL=$VITE_API_URL" > .env
+RUN cat .env
+
 RUN npm run build
 
 FROM node:18-alpine
 WORKDIR /app
 COPY --from=builder /app/dist /app/dist
+
+# Сохраняем информацию об API URL для отладки
+RUN echo "VITE_API_URL в сборке: ${VITE_API_URL}" > /app/api-info.txt
 
 # Создаем файл сервера на чистом Node.js без зависимостей
 RUN echo 'const http = require("http");' > server.js && \

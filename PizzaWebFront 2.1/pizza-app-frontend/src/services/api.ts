@@ -2,7 +2,10 @@ import axios, { AxiosError, AxiosInstance, AxiosRequestConfig } from 'axios';
 import { AuthRequest, AuthResponse, CustomerRegistration, EmployeeRegistration, CourierRegistration, AdminRegistration, CreateOrderRequest, CreateReviewRequest } from '../types';
 
 // Используем переменную окружения, если доступна, иначе используем localhost
+// В Railway переменная VITE_API_URL жестко задана на production URL бэкенда
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:5023/api';
+
+console.log('Инициализация API с URL:', API_URL);
 
 const api: AxiosInstance = axios.create({
   baseURL: API_URL,

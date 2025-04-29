@@ -9,3 +9,4 @@ restartPolicyMaxRetries = 10
 
 [deploy.env]
 PORT = "3000"
+VITE_API_URL = "https://backend-production-af78.up.railway.app/api"
