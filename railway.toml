@@ -3,17 +3,17 @@ builder = "DOCKERFILE"
 
 [deploy]
 startCommand = "/app/start.sh"
-healthcheckPath = "/health"
-healthcheckTimeout = 100
-healthcheckPort = 8081
+healthcheckPath = "/health.html"
 restartPolicyType = "on_failure"
 restartPolicyMaxRetries = 10
 
 [deploy.env]
 ASPNETCORE_ENVIRONMENT = "Production"
-ASPNETCORE_DATA_PROTECTION_PATH = "/app/DataProtection-Keys"
-ASPNETCORE_DATA_PROTECTION_KEYSDIR = "/app/DataProtection-Keys"
 PORT = "8080"
+Jwt__Key = "supersecretkey_that_has_at_least_32_chars"
+Jwt__Issuer = "PizzaWebApp"
+Jwt__Audience = "PizzaWebAppUsers"
+Jwt__ExpireHours = "2"
 
 # Указываем, какой Dockerfile использовать для каждого сервиса
 [services.backend]

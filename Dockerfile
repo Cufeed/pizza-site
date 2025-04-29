@@ -113,81 +113,28 @@ CMD ["/start.sh"]
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
-# Копируем файлы проекта
-COPY ["PizzaWebApp/PizzaWebApp.csproj", "PizzaWebApp/"]
-RUN dotnet restore "PizzaWebApp/PizzaWebApp.csproj"
+# Копируем проект и восстанавливаем зависимости
+COPY ["PizzaWebApp/", "./"]
+RUN dotnet restore
 
-COPY ["PizzaWebApp/", "PizzaWebApp/"]
-WORKDIR "/src/PizzaWebApp"
-RUN dotnet build "PizzaWebApp.csproj" -c Release -o /app/build
+# Публикуем приложение
+RUN dotnet publish -c Release -o /app/publish
 
-FROM build AS publish
-RUN dotnet publish "PizzaWebApp.csproj" -c Release -o /app/publish
-
-# Создаем простое приложение для health check
-FROM build AS healthcheck
-WORKDIR /healthcheck
-
-# Создаем файл для health check
-RUN echo 'using Microsoft.AspNetCore.Builder; \
-using Microsoft.AspNetCore.Hosting; \
-using Microsoft.Extensions.DependencyInjection; \
-using Microsoft.Extensions.Hosting; \
-\
-namespace HealthCheck \
-{ \
-    public class Program \
-    { \
-        public static void Main(string[] args) \
-        { \
-            var builder = WebApplication.CreateBuilder(args); \
-            builder.WebHost.UseUrls("http://+:8081"); \
-            \
-            var app = builder.Build(); \
-            \
-            app.MapGet("/health", () => "Healthy"); \
-            \
-            app.Run(); \
-        } \
-    } \
-}' > ./Program.cs
-
-# Создаем проект для health check
-RUN dotnet new web -o . --no-restore
-RUN dotnet publish -c Release -o /healthcheck/publish
-
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
+FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
+COPY --from=build /app/publish .
 
-# Устанавливаем curl для проверки health
-RUN apt-get update && apt-get install -y curl && rm -rf /var/lib/apt/lists/*
-
-# Создаем директорию для DataProtection
-RUN mkdir -p /app/DataProtection-Keys && chown -R 1001:1001 /app/DataProtection-Keys
-
-# Создаем wwwroot директорию
+# Создаем простой файл для health check
 RUN mkdir -p /app/wwwroot
+RUN echo '<!DOCTYPE html><html><head><title>Health</title></head><body>OK</body></html>' > /app/wwwroot/health.html
 
-# Копируем приложение
-COPY --from=publish /app/publish .
-COPY --from=healthcheck /healthcheck/publish /healthcheck
-
-# Устанавливаем переменные окружения
-ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ASPNETCORE_DATA_PROTECTION_PATH=/app/DataProtection-Keys
-ENV ASPNETCORE_DATA_PROTECTION_KEYSDIR=/app/DataProtection-Keys
-
-# Создаем скрипт для запуска
+# Создаем скрипт запуска
 RUN echo '#!/bin/sh' > /app/start.sh && \
-    echo 'export ASPNETCORE_URLS="http://+:${PORT:-8080}"' >> /app/start.sh && \
-    echo 'cd /healthcheck && dotnet HealthCheck.dll &' >> /app/start.sh && \
-    echo 'cd /app && dotnet PizzaWebApp.dll' >> /app/start.sh && \
+    echo 'dotnet PizzaWebApp.dll' >> /app/start.sh && \
     chmod +x /app/start.sh
 
+# Указываем порт для Railway
+ENV PORT=8080
 EXPOSE 8080
-EXPOSE 8081
 
-HEALTHCHECK --interval=5s --timeout=3s --start-period=30s \
-  CMD curl -f http://localhost:8081/health || exit 1
-
-ENTRYPOINT ["/app/start.sh"] 
+CMD ["/app/start.sh"] 

@@ -54,10 +54,12 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 
 builder.Services.AddControllers();
 
-// Добавляем обработку БД только если строка подключения существует
+// Изменить имя строки подключения для Railway
 try
 {
-    var connectionString = builder.Configuration.GetConnectionString("PizzaConnection");
+    var connectionString = builder.Configuration.GetConnectionString("DefaultConnection") ?? 
+                          builder.Configuration.GetConnectionString("PizzaConnection");
+    
     if (!string.IsNullOrEmpty(connectionString))
     {
         builder.Services.AddDbContext<PizzaDbContext>(options =>
@@ -93,6 +95,12 @@ if (!File.Exists("wwwroot/health-minimal.html"))
     File.WriteAllText("wwwroot/health-minimal.html", "<html><body>OK</body></html>");
 }
 
+// Создаем health.html для Railway
+if (!File.Exists("wwwroot/health.html"))
+{
+    File.WriteAllText("wwwroot/health.html", "<html><body>Healthy</body></html>");
+}
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {
@@ -104,16 +112,12 @@ if (app.Environment.IsDevelopment())
 app.UseStaticFiles();
 
 // Добавляем простой health endpoint
-app.MapGet("/api/health", () => Results.Json(new { status = "UP" }));
-
-// Добавляем обработку для health-minimal.html напрямую
-app.MapGet("/health-minimal.html", () => Results.Content("<html><body>OK</body></html>", "text/html"));
-
-app.UseHttpsRedirection();
+app.MapGet("/health", () => Results.Content("<html><body>Healthy</body></html>", "text/html"));
+app.MapGet("/api/health", () => Results.Json(new { status = "Healthy" }));
 
 app.UseCors("AllowAll");
-app.UseCors("AllowYandexAPI");
 
+app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
