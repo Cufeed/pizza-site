@@ -10,6 +10,8 @@ restartPolicyMaxRetries = 10
 
 [deploy.env]
 ASPNETCORE_ENVIRONMENT = "Production"
+ASPNETCORE_URLS = "http://+:5023"
+ASPNETCORE_DATA_PROTECTION_PATH = "/app/DataProtection-Keys"
 
 # Указываем, какой Dockerfile использовать для каждого сервиса
 [services.backend]

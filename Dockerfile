@@ -126,6 +126,20 @@ RUN dotnet publish "PizzaWebApp.csproj" -c Release -o /app/publish
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
+
+# Создаем директорию для DataProtection
+RUN mkdir -p /app/DataProtection-Keys && chown -R 1001:1001 /app/DataProtection-Keys
+
+# Создаем wwwroot директорию
+RUN mkdir -p /app/wwwroot
+
 COPY --from=publish /app/publish .
+
+# Устанавливаем переменные окружения
+ENV ASPNETCORE_URLS=http://+:5023
+ENV ASPNETCORE_ENVIRONMENT=Production
+ENV ASPNETCORE_DATA_PROTECTION_PATH=/app/DataProtection-Keys
+
 EXPOSE 5023
+
 ENTRYPOINT ["dotnet", "PizzaWebApp.dll"] 
