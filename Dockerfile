@@ -1,16 +1,14 @@
-FROM node:20-alpine
-
+FROM node:20-alpine AS builder
 WORKDIR /app
 
-RUN npm install -g serve
+COPY ["PizzaWebFront 2.1/pizza-app-frontend/package*.json", "./"]
+RUN npm ci
+COPY ["PizzaWebFront 2.1/pizza-app-frontend/", "./"]
+RUN npm run build
 
-RUN mkdir -p /app/dist
-
-# Создаем простой тестовый сайт
-RUN echo '<!DOCTYPE html><html><head><title>Pizza App</title></head><body><h1>Pizza App</h1><p>Site works!</p></body></html>' > /app/dist/index.html
-RUN echo '<!DOCTYPE html><html><head><title>Health</title></head><body>OK</body></html>' > /app/dist/health.html
-RUN echo '<!DOCTYPE html><html><head><title>Health</title></head><body>OK</body></html>' > /app/dist/health
+FROM nginx:stable-alpine AS final
+COPY --from=builder /app/dist /usr/share/nginx/html
+RUN echo 'OK' > /usr/share/nginx/html/health
 
 EXPOSE 80
-
-CMD ["serve", "-s", "dist", "-l", "80"] 
+CMD ["nginx", "-g", "daemon off;"] 
