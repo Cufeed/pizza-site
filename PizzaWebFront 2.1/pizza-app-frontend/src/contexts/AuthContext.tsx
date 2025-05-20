@@ -35,7 +35,7 @@ interface AuthProviderProps {
 
 export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [userType, setUserType] = useState<'customer' | 'employee' | 'courier' | 'admin' | null>(null);
+  const [userType, setUserType] = useState<'customer' | 'employee' | 'courier' | 'admin' | 'manager' | null>(null);
   const [userId, setUserId] = useState<string | null>(null);
   const [user, setUser] = useState<{ id: string; email: string; userType: string; } | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -109,7 +109,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
             } else if (lowerCaseRole === 'admin') {
               setUserType('admin');
             } else if (lowerCaseRole === 'manager') {
-              setUserType('employee'); // Manager считаем типом сотрудника
+              setUserType('manager');
             }
           }
         } catch (err) {
@@ -173,7 +173,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } else if (lowerCaseRole === 'admin') {
         setUserType('admin');
       } else if (lowerCaseRole === 'manager') {
-        setUserType('employee'); // Manager считаем типом сотрудника
+        setUserType('manager');
       } else {
         throw new Error('Invalid user role');
       }
@@ -268,7 +268,9 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       } else if (lowerCaseRole === 'admin') {
         setUserType('admin');
       } else if (lowerCaseRole === 'manager') {
-        setUserType('employee'); // Manager считаем типом сотрудника
+        setUserType('manager');
+      } else {
+        throw new Error('Invalid user role');
       }
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to register');

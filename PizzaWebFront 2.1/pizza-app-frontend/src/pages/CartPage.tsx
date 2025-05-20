@@ -51,7 +51,7 @@ const CartPage: React.FC = () => {
     try {
       // Используем полный URL бэкенда для отладки проблемы с API
       console.log('Отправляем запрос для адреса:', query);
-      const response = await axios.get(`${import.meta.env.VITE_API_URL}/AddressSuggestions/suggest`, {
+      const response = await axios.get(`${import.meta.env.VITE_API_URL || 'http://localhost:5023/api'}/AddressSuggestions/suggest`, {
         params: {
           query: query
         }

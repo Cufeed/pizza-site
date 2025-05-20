@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { menuAPI, pizzaAPI, promotionAPI } from '../services/api';
 import { MenuItem, Pizza, Promotion } from '../types';
 import PizzaCard from '../components/PizzaCard';
+import PizzaChat from '../components/PizzaChat';
 import { FaSearch } from 'react-icons/fa';
 
 interface CombinedItem {
@@ -180,6 +181,9 @@ const MenuPage: React.FC = () => {
           ))}
         </div>
       )}
+
+      {/* Добавляем чат */}
+      {!loading && menuItems.length > 0 && <PizzaChat menuItems={menuItems} />}
     </div>
   );
 };

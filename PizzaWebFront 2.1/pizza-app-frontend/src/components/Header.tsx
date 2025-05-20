@@ -37,17 +37,20 @@ const Header: React.FC = () => {
               <Link to="/admin/register" className="hover:text-yellow-300 transition font-medium">Регистрация пользователей</Link>
             </>
           )}
+          {/* Ссылки для менеджеров */}
+          {/*{(userType === 'manager' || userType === 'admin') && (*/}
+          {(userType === 'manager') && (
+            <>
+              <Link to="/orders/manage" className="hover:text-yellow-300 transition font-medium">Управление заказами</Link>
+              <Link to="/admin/promotions" className="hover:text-yellow-300 transition font-medium">Управление акциями</Link>
+              <Link to="/admin/pizzas" className="hover:text-yellow-300 transition font-medium">Управление пиццами</Link>
+            </>
+          )}
 
           {/* Ссылки для сотрудников */}
           {(userType === 'employee' || userType === 'admin') && (
             <>
               <Link to="/orders/manage" className="hover:text-yellow-300 transition font-medium">Управление заказами</Link>
-              {userType === 'employee' && (
-                <>
-                  <Link to="/admin/promotions" className="hover:text-yellow-300 transition font-medium">Управление акциями</Link>
-                  <Link to="/admin/pizzas" className="hover:text-yellow-300 transition font-medium">Управление пиццами</Link>
-                </>
-              )}
             </>
           )}
 

@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { menuAPI, pizzaAPI, promotionAPI } from '../services/api';
 import { MenuItem, Pizza, Promotion } from '../types';
 import PizzaCard from '../components/PizzaCard';
+import PizzaChat from '../components/PizzaChat';
 import { FaArrowRight, FaMotorcycle, FaPizzaSlice, FaMedal } from 'react-icons/fa';
 import FallingPizzaBackground from '../components/FallingPizzaBackground';
 
@@ -238,6 +239,9 @@ const HomePage: React.FC = () => {
           )}
         </div>
       </section>
+
+      {/* ИИ-чат */}
+      {!loading && featuredItems.length > 0 && <PizzaChat menuItems={featuredItems} />}
 
       {/* Раздел акций  */}
       <section className="py-16 bg-gradient-to-b from-white to-yellow-50">

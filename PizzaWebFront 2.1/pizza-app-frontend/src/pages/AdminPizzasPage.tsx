@@ -26,8 +26,8 @@ const AdminPizzasPage: React.FC = () => {
 
   useEffect(() => {
     // Проверяем, авторизован ли пользователь как админ или менеджер
-    if (userType !== 'admin' && userType !== 'employee') {
-      setError('У вас нет доступа к этой странице');
+    if (userType !== 'admin' && userType !== 'manager') {
+      setError('У вас нет доступа к этой странице. Доступ разрешен только для администраторов и менеджеров.');
       setLoading(false);
       return;
     }
@@ -201,7 +201,7 @@ const AdminPizzasPage: React.FC = () => {
   };
 
   // Если пользователь не админ или менеджер
-  if (userType !== 'admin' && userType !== 'employee' && !loading) {
+  if (userType !== 'admin' && userType !== 'manager' && !loading) {
     return (
       <div className="container mx-auto px-4 py-8">
         <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded" role="alert">

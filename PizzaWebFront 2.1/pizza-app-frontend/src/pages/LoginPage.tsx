@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { FaEnvelope, FaLock, FaExclamationCircle } from 'react-icons/fa';
 import { useAuth } from '../contexts/AuthContext';
@@ -6,22 +6,26 @@ import { useAuth } from '../contexts/AuthContext';
 const LoginPage: React.FC = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
   const navigate = useNavigate();
   const location = useLocation();
-  const { login } = useAuth();
+  const { login, error, isAuthenticated } = useAuth();
+  
+  // Отслеживаем изменения в состоянии аутентификации
+  useEffect(() => {
+    if (isAuthenticated) {
+      const redirectTo = (location.state as any)?.redirectTo || '/';
+      navigate(redirectTo);
+    }
+  }, [isAuthenticated, navigate, location]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setError('');
 
     try {
       await login({ identifier: email, password });
-      // Получаем URL для перенаправления из состояния location или используем '/'
-      const redirectTo = (location.state as any)?.redirectTo || '/';
-      navigate(redirectTo);
+      // Перенаправление будет выполнено эффектом выше
     } catch (err) {
-      setError('Ошибка входа. Проверьте email и пароль.');
+      // Ошибка уже будет установлена в контексте авторизации
     }
   };
 

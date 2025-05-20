@@ -149,3 +149,17 @@ export interface CreateReviewRequest {
   customerId: string;
   orderId: string;
 }
+
+// Типы для AI чата
+export interface AIMessage {
+  role: string;
+  content: string;
+}
+
+export interface AIChoice {
+  message: AIMessage;
+}
+
+export interface AIResponse {
+  choices: AIChoice[];
+}

@@ -31,7 +31,7 @@ interface NewPromotion {
 }
 
 const AdminPromotionsPage: React.FC = () => {
-  const { user } = useAuth();
+  const { user, userType } = useAuth();
   const [promotions, setPromotions] = useState<Promotion[]>([]);
   const [pizzas, setPizzas] = useState<Pizza[]>([]);
   const [loading, setLoading] = useState(true);
@@ -53,9 +53,16 @@ const AdminPromotionsPage: React.FC = () => {
   const [editingPromotion, setEditingPromotion] = useState<Promotion | null>(null);
 
   useEffect(() => {
+    // Проверка прав доступа
+    if (userType !== 'admin' && userType !== 'manager') {
+      setError('У вас нет доступа к этой странице. Доступ разрешен только для администраторов и менеджеров.');
+      setLoading(false);
+      return;
+    }
+    
     fetchPromotions();
     fetchPizzas();
-  }, []);
+  }, [userType]);
 
   const fetchPromotions = async () => {
     try {
@@ -236,6 +243,18 @@ const AdminPromotionsPage: React.FC = () => {
     return (
       <div className="flex justify-center items-center min-h-screen">
         <FaSpinner className="animate-spin text-4xl text-blue-500" />
+      </div>
+    );
+  }
+
+  // Если пользователь не админ или менеджер, показываем сообщение об ошибке доступа
+  if (userType !== 'admin' && userType !== 'manager' && !loading) {
+    return (
+      <div className="container mx-auto px-4 py-8">
+        <div className="bg-red-100 border-l-4 border-red-500 text-red-700 p-4 rounded" role="alert">
+          <p className="font-bold">Доступ запрещен</p>
+          <p>У вас нет прав для просмотра этой страницы. Доступ разрешен только для администраторов и менеджеров.</p>
+        </div>
       </div>
     );
   }
