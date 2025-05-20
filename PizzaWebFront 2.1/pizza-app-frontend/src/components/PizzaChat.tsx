@@ -4,7 +4,7 @@ import axios from 'axios';
 import { AIResponse } from '../types';
 
 // API ключ
-const API_KEY = "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";
+const API_KEY = "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";
 
 interface Message {
   text: string;
@@ -101,7 +101,7 @@ const PizzaChat: React.FC<PizzaChatProps> = ({ menuItems }) => {
           headers: {
             'Content-Type': 'application/json',
             'Authorization': `Bearer ${API_KEY}`,
-            'HTTP-Referer': 'https://github.com/yourusername/pizza-chat',
+            'HTTP-Referer': 'https://frontend-production-2978.up.railway.app',
             'X-Title': 'Pizza AI Chat'
           }
         }
