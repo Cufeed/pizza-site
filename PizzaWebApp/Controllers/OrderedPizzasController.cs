@@ -19,7 +19,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager, Employee, Courier, Customer")]
         public async Task<ActionResult<IEnumerable<OrderedPizza>>> GetOrderedPizzas()
         {
             //return await _context.OrderedPizzas
@@ -38,7 +38,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpGet("{id}")]
-        //[Authorize(Roles = "Admin, Manager, Employee")]
+        [Authorize(Roles = "Admin, Manager, Employee, Courier, Customer")]
         public async Task<ActionResult<OrderedPizza>> GetOrderedPizza(Guid id)
         {
             //var orderedPizza = await _context.OrderedPizzas
@@ -58,7 +58,7 @@ namespace PizzaWebApp.Controllers
 
             return orderedPizza == null ? NotFound() : orderedPizza;
         }
-
+        [Authorize(Roles = "Admin, Manager, Employee, Courier, Customer")]
         [HttpGet("order/{orderId}")]
 
         public async Task<ActionResult<IEnumerable<OrderedPizza>>> GetOrderedPizzasByOrderId(Guid orderId)
@@ -83,7 +83,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager, Employee, Courier, Customer")]
         public async Task<ActionResult<OrderedPizza>> PostOrderedPizza(OrderedPizza orderedPizza)
         {
             orderedPizza.Id = Guid.NewGuid();

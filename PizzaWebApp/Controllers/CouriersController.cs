@@ -19,7 +19,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager, Courier")]
         public async Task<ActionResult<IEnumerable<Courier>>> GetCouriers()
         {
             return await _context.Couriers.Select(c => new Courier

@@ -56,7 +56,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin, Manager, Employee")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<ActionResult<MenuItem>> PostMenuItem(MenuItem item)
         {
             item.Id = Guid.NewGuid();
@@ -69,7 +69,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpPut("{id}")]
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> PutMenuItem(Guid id, MenuItem item)
         {
             if (id != item.Id) return BadRequest();
@@ -80,7 +80,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> DeleteMenuItem(Guid id)
         {
             var item = await _context.Menu.FindAsync(id);

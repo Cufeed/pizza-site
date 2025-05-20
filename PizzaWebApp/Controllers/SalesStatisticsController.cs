@@ -19,6 +19,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpGet]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<ActionResult<IEnumerable<SalesStatistic>>> GetSalesStatistics()
         {
             return await _context.SalesStatistics

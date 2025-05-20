@@ -19,7 +19,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpGet]
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager, Employee, Customer")]
         public async Task<ActionResult<IEnumerable<Employee>>> GetEmployees()
         {
             return await _context.Employees
@@ -34,7 +34,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpGet("{id}")]
-        //[Authorize(Roles = "Admin, Manager, Employee")]
+        [Authorize(Roles = "Admin, Manager, Employee, Customer")]
         public async Task<ActionResult<Employee>> GetEmployee(Guid id)
         {
             //var employee = await _context.Employees.FindAsync(id);
@@ -53,7 +53,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpGet("{id}/role")]
-        [Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager, Employee, Customer")]
         public async Task<ActionResult<object>> GetEmployeeRole(Guid id)
         {
             var employee = await _context.Employees.FindAsync(id);

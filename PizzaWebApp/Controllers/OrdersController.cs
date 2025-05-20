@@ -17,9 +17,8 @@ namespace PizzaWebApp.Controllers
         {
             _context = context;
         }
-
         [HttpGet]
-        //[Authorize(Roles = "Admin, Manager, Courier, Employee")]
+        [Authorize(Roles = "Admin, Manager, Employee, Courier, Customer")]
         public async Task<ActionResult<IEnumerable<Order>>> GetOrders()
         {
             //return await _context.Orders
@@ -38,7 +37,7 @@ namespace PizzaWebApp.Controllers
                 })
                 .ToListAsync();
         }
-
+        [Authorize(Roles = "Admin, Manager, Employee, Courier, Customer")]
         [HttpGet("{id}")]
         //[Authorize(Roles = "Admin, Manager, Courier, Employee")]
         public async Task<ActionResult<Order>> GetOrder(Guid id)
@@ -66,7 +65,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin, Manager, Employee")]
+        [Authorize(Roles = "Admin, Manager, Employee, Customer, Courier")]
         public async Task<ActionResult<Order>> PostOrder(Order order)
         {
             order.Id = Guid.NewGuid();
@@ -76,7 +75,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpPut("{id}")]
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager, Employee, Courier")]
         public async Task<IActionResult> PutOrder(Guid id, Order order)
         {
             if (id != order.Id) return BadRequest();
@@ -87,7 +86,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> DeleteOrder(Guid id)
         {
             var order = await _context.Orders.FindAsync(id);

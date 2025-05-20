@@ -55,7 +55,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin, Manager, Employee")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<ActionResult<Pizza>> PostPizza(Pizza pizza)
         {
             pizza.Id = Guid.NewGuid();
@@ -65,7 +65,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpPut("{id}")]
-        //[Authorize(Roles = "Admin, Manager, Employee")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> PutPizza(Guid id, Pizza pizza)
         {
             if (id != pizza.Id) return BadRequest();
@@ -76,7 +76,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize(Roles = "Admin, Manager, Employee")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> DeletePizza(Guid id)
         {
             var pizza = await _context.Pizzas.FindAsync(id);

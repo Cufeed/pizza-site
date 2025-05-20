@@ -19,7 +19,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpGet]
-        [Authorize(Roles = "Admin, Manager, Courier")]
+        [Authorize(Roles = "Admin, Manager, Courier, Employee, Customer")]
         public async Task<ActionResult<IEnumerable<Customer>>> GetCustomers()
         {
             return await _context.Customers.Select(c => new Customer
@@ -32,7 +32,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin, Manager, Customer, Courier")]
+        [Authorize(Roles = "Admin, Manager, Customer, Courier, Employee")]
         public async Task<ActionResult<Customer>> GetCustomer(Guid id)
         {
             //var customer = await _context.Customers.FindAsync(id);

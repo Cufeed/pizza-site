@@ -60,7 +60,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpPost]
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<ActionResult<Promotion>> PostPromotion(Promotion promotion)
         {
             promotion.Id = Guid.NewGuid();
@@ -73,7 +73,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpPut("{id}")]
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> PutPromotion(Guid id, Promotion promotion)
         {
             if (id != promotion.Id) return BadRequest();
@@ -84,7 +84,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> DeletePromotion(Guid id)
         {
             var promotion = await _context.Promotions.FindAsync(id);

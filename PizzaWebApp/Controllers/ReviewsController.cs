@@ -87,7 +87,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpDelete("{id}")]
-        //[Authorize(Roles = "Admin, Manager")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<IActionResult> DeleteReview(Guid id)
         {
             var review = await _context.Reviews.FindAsync(id);

@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Web;
 
@@ -14,7 +15,7 @@ namespace PizzaWebApp.Controllers.Api
         {
             _httpClient = httpClient;
         }
-
+        //[Authorize(Roles = "Admin, Manager, Courier, Employee, Customer")]
         [HttpGet("suggest")]
         public async Task<IActionResult> GetSuggestions(string query)
         {

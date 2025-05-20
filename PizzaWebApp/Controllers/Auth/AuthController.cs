@@ -8,6 +8,7 @@ using System.Security.Claims;
 using System.Text;
 using Microsoft.EntityFrameworkCore;
 using PizzaWebApp.Models.Entities;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PizzaWebApp.Controllers.Auth
 {
@@ -121,6 +122,7 @@ namespace PizzaWebApp.Controllers.Auth
         }
 
         [HttpPost("register/employee")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<ActionResult<Employee>> RegisterEmployee(EmployeeRegistrationDto dto)
         {
             if (await _context.Employees.AnyAsync(e => e.ContactInfo == dto.ContactInfo))
@@ -156,6 +158,7 @@ namespace PizzaWebApp.Controllers.Auth
         }
 
         [HttpPost("register/courier")]
+        [Authorize(Roles = "Admin, Manager")]
         public async Task<ActionResult<Courier>> RegisterCourier(CourierRegistrationDto dto)
         {
             if (await _context.Couriers.AnyAsync(c => c.ContactInfo == dto.ContactInfo))

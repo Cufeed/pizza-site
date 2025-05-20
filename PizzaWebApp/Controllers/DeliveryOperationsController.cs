@@ -6,6 +6,7 @@ using PizzaWebApp.Models.Entities;
 
 namespace PizzaWebApp.Controllers
 {
+    // Удалить
     [ApiController]
     [Route("api/[controller]")]
     public class DeliveryOperationsController : ControllerBase
@@ -36,7 +37,7 @@ namespace PizzaWebApp.Controllers
         }
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Admin, Manager, Courier, Customer")]
+        [Authorize(Roles = "Admin, Manager, Courier, Employee, Customer")]
         public async Task<ActionResult<DeliveryOperation>> GetDeliveryOperation(Guid id)
         {
             //var operation = await _context.DeliveryOperations
