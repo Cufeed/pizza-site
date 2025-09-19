@@ -30,22 +30,25 @@ docker compose up -d db
 
 ## Адреса
 - Фронтенд берёт адрес API из `VITE_API_URL` во время сборки.
-- По умолчанию в `docker-compose.yml` `http://localhost:8080/api`.
+- По умолчанию в `docker-compose.yml`: `http://localhost:8080/api`.
 
 # Пересборка только фронт
+```bash
 docker compose build web
 docker compose up -d web
 ```
 
 ## Дамп БД
 - Используется PostgreSQL 17 (формат дампа).
-- `db/init.sh` сначала пытается `pg_restore` (`pizza_dump.sql` — custom dump),
-  если не вышло — падает обратно на `psql` для plain SQL.
+- `db/init.sh` сначала пытается `pg_restore` (`pizza_dump.sql` — дамп), если не вышло — обратно на `psql` для plain SQL.
 
 # Остановить всё
+```bash
 docker compose down
+```
 
 # Полностью снести со всеми данными
+```bash
 docker compose down -v
 ```
 
