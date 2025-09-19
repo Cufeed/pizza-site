@@ -1,0 +1,13 @@
+bin
+obj
+.git
+.gitignore
+.vscode
+.DS_Store
+*.user
+*.suo
+*.cache
+*.tmp
+*.log
+
+

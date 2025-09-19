@@ -1,0 +1,431 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\controllers\\auth\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:controllers\\auth\\authcontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\models\\auth\\dto\\authrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:models\\auth\\dto\\authrequest.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\controllers\\employeescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:controllers\\employeescontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\controllers\\pizzascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:controllers\\pizzascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\controllers\\promotionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:controllers\\promotionscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\controllers\\salesstatisticscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:controllers\\salesstatisticscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\controllers\\reviewscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:controllers\\reviewscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:controllers\\orderscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\controllers\\orderedpizzascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:controllers\\orderedpizzascontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\controllers\\menuitemscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:controllers\\menuitemscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\controllers\\courierscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:controllers\\courierscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\controllers\\deliveryoperationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:controllers\\deliveryoperationscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\controllers\\customerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:controllers\\customerscontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\models\\auth\\dto\\courierregistrationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:models\\auth\\dto\\courierregistrationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\models\\auth\\dto\\customerregistrationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:models\\auth\\dto\\customerregistrationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\models\\auth\\dto\\adminregistrationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:models\\auth\\dto\\adminregistrationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\models\\auth\\dto\\employeeregistrationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:models\\auth\\dto\\employeeregistrationdto.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:program.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\models\\auth\\userbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:models\\auth\\userbase.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\models\\auth\\passwordhasher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:models\\auth\\passwordhasher.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\migrations\\20250317154914_migra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:migrations\\20250317154914_migra.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:appsettings.json||{90A6B3A7-C1A3-4009-A288-E2FF89E96FA0}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\pizzawebapp.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:pizzawebapp.http||{5703B403-55E7-4C63-8C88-A8F52C7A45C5}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|f:\\repos\\pizzawebapp\\pizzawebapp\\pizzawebapp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|",
+      "RelativeMoniker": "D:0:0:{B80D08E4-3651-9389-3EA8-B85870834735}|PizzaWebApp.csproj|solutionrelative:pizzawebapp.csproj||{FA3CD31E-987B-443A-9B81-186104E8DAC1}|"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 21,
+          "Children": [
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{e5c86464-96be-4d7c-9a8b-abcb3bbf5f92}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:129:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:131:0:{1fc202d4-d401-403c-9834-5b218574bb67}"
+            },
+            {
+              "$type": "Bookmark",
+              "Name": "ST:0:0:{aa2115a1-9712-457b-9047-dbb71ca2cdd2}"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "SalesStatisticsController.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\SalesStatisticsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\SalesStatisticsController.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\SalesStatisticsController.cs",
+              "RelativeToolTip": "Controllers\\SalesStatisticsController.cs",
+              "ViewState": "AgIAAB4AAAAAAAAAAAAYwDYAAAASAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T16:31:51.695Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "ReviewsController.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\ReviewsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ReviewsController.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\ReviewsController.cs",
+              "RelativeToolTip": "Controllers\\ReviewsController.cs",
+              "ViewState": "AgIAAFAAAAAAAAAAAAAkwF8AAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T16:29:07.272Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "PromotionsController.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\PromotionsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PromotionsController.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\PromotionsController.cs",
+              "RelativeToolTip": "Controllers\\PromotionsController.cs",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAkwF4AAAAfAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T16:28:07.555Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "PizzasController.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\PizzasController.cs",
+              "RelativeDocumentMoniker": "Controllers\\PizzasController.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\PizzasController.cs",
+              "RelativeToolTip": "Controllers\\PizzasController.cs",
+              "ViewState": "AgIAAD4AAAAAAAAAAAAkwE8AAAA8AAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T16:26:12.132Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "OrdersController.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\OrdersController.cs",
+              "RelativeDocumentMoniker": "Controllers\\OrdersController.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\OrdersController.cs",
+              "RelativeToolTip": "Controllers\\OrdersController.cs",
+              "ViewState": "AgIAAEoAAAAAAAAAAAAkwFsAAAAJAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T16:24:23.368Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "OrderedPizzasController.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\OrderedPizzasController.cs",
+              "RelativeDocumentMoniker": "Controllers\\OrderedPizzasController.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\OrderedPizzasController.cs",
+              "RelativeToolTip": "Controllers\\OrderedPizzasController.cs",
+              "ViewState": "AgIAABcAAAAAAAAAAAAQwCwAAAAsAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T16:23:46.804Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "MenuItemsController.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\MenuItemsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\MenuItemsController.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\MenuItemsController.cs",
+              "RelativeToolTip": "Controllers\\MenuItemsController.cs",
+              "ViewState": "AgIAAEMAAAAAAAAAAAAkwFAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T16:22:27.209Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "EmployeesController.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\EmployeesController.cs",
+              "RelativeDocumentMoniker": "Controllers\\EmployeesController.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\EmployeesController.cs",
+              "RelativeToolTip": "Controllers\\EmployeesController.cs",
+              "ViewState": "AgIAACgAAAAAAAAAAAAgwBQAAAARAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T16:20:17.354Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "DeliveryOperationsController.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\DeliveryOperationsController.cs",
+              "RelativeDocumentMoniker": "Controllers\\DeliveryOperationsController.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\DeliveryOperationsController.cs",
+              "RelativeToolTip": "Controllers\\DeliveryOperationsController.cs",
+              "ViewState": "AgIAAEQAAAAAAAAAAAAkwFgAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T16:19:37.319Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "CustomersController.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\CustomersController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CustomersController.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\CustomersController.cs",
+              "RelativeToolTip": "Controllers\\CustomersController.cs",
+              "ViewState": "AgIAAAYAAAAAAAAAAAAAAEoAAAAtAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T16:17:09.178Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "CouriersController.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\CouriersController.cs",
+              "RelativeDocumentMoniker": "Controllers\\CouriersController.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\CouriersController.cs",
+              "RelativeToolTip": "Controllers\\CouriersController.cs",
+              "ViewState": "AgIAAA4AAAAAAAAAAAAxwCMAAABEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-18T16:07:19.945Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 13,
+              "Title": "CourierRegistrationDto.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\DTO\\CourierRegistrationDto.cs",
+              "RelativeDocumentMoniker": "Models\\Auth\\DTO\\CourierRegistrationDto.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\DTO\\CourierRegistrationDto.cs",
+              "RelativeToolTip": "Models\\Auth\\DTO\\CourierRegistrationDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAwAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T17:02:31.604Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 16,
+              "Title": "EmployeeRegistrationDto.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\DTO\\EmployeeRegistrationDto.cs",
+              "RelativeDocumentMoniker": "Models\\Auth\\DTO\\EmployeeRegistrationDto.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\DTO\\EmployeeRegistrationDto.cs",
+              "RelativeToolTip": "Models\\Auth\\DTO\\EmployeeRegistrationDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T17:01:26.723Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 15,
+              "Title": "AdminRegistrationDto.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\DTO\\AdminRegistrationDto.cs",
+              "RelativeDocumentMoniker": "Models\\Auth\\DTO\\AdminRegistrationDto.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\DTO\\AdminRegistrationDto.cs",
+              "RelativeToolTip": "Models\\Auth\\DTO\\AdminRegistrationDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAoAAAAIAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T16:02:52.57Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 20,
+              "Title": "20250317154914_Migra.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Migrations\\20250317154914_Migra.cs",
+              "RelativeDocumentMoniker": "Migrations\\20250317154914_Migra.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Migrations\\20250317154914_Migra.cs",
+              "RelativeToolTip": "Migrations\\20250317154914_Migra.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T15:49:14.876Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 14,
+              "Title": "CustomerRegistrationDto.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\DTO\\CustomerRegistrationDto.cs",
+              "RelativeDocumentMoniker": "Models\\Auth\\DTO\\CustomerRegistrationDto.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\DTO\\CustomerRegistrationDto.cs",
+              "RelativeToolTip": "Models\\Auth\\DTO\\CustomerRegistrationDto.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAABIAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T15:45:54.815Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 18,
+              "Title": "UserBase.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\UserBase.cs",
+              "RelativeDocumentMoniker": "Models\\Auth\\UserBase.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\UserBase.cs",
+              "RelativeToolTip": "Models\\Auth\\UserBase.cs",
+              "ViewState": "AgIAAAoAAAAAAAAAAAAcwBMAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T15:21:46.278Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AuthController.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\Auth\\AuthController.cs",
+              "RelativeDocumentMoniker": "Controllers\\Auth\\AuthController.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Controllers\\Auth\\AuthController.cs",
+              "RelativeToolTip": "Controllers\\Auth\\AuthController.cs",
+              "ViewState": "AgIAABoAAAAAAAAAAAAuwEEAAAAhAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T15:18:18.253Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 21,
+              "Title": "appsettings.json",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\appsettings.json",
+              "RelativeDocumentMoniker": "appsettings.json",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\appsettings.json",
+              "RelativeToolTip": "appsettings.json",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAkAAAAEAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.001642|",
+              "WhenOpened": "2025-03-17T15:13:47.475Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 22,
+              "Title": "PizzaWebApp.http",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\PizzaWebApp.http",
+              "RelativeDocumentMoniker": "PizzaWebApp.http",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\PizzaWebApp.http",
+              "RelativeToolTip": "PizzaWebApp.http",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003502|",
+              "WhenOpened": "2025-03-17T15:13:35.016Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 17,
+              "Title": "Program.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Program.cs",
+              "RelativeDocumentMoniker": "Program.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Program.cs",
+              "RelativeToolTip": "Program.cs",
+              "ViewState": "AgIAAEYAAAAAAAAAAAAiwFAAAAABAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T15:09:54.786Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 19,
+              "Title": "PasswordHasher.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\PasswordHasher.cs",
+              "RelativeDocumentMoniker": "Models\\Auth\\PasswordHasher.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\PasswordHasher.cs",
+              "RelativeToolTip": "Models\\Auth\\PasswordHasher.cs",
+              "ViewState": "AgIAAAwAAAAAAAAAAAAmwBcAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T15:08:18.88Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 23,
+              "Title": "PizzaWebApp.csproj",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\PizzaWebApp.csproj",
+              "RelativeDocumentMoniker": "PizzaWebApp.csproj",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\PizzaWebApp.csproj",
+              "RelativeToolTip": "PizzaWebApp.csproj",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAACEAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000758|",
+              "WhenOpened": "2025-03-17T15:07:33.871Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "AuthRequest.cs",
+              "DocumentMoniker": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\DTO\\AuthRequest.cs",
+              "RelativeDocumentMoniker": "Models\\Auth\\DTO\\AuthRequest.cs",
+              "ToolTip": "F:\\repos\\PizzaWebApp\\PizzaWebApp\\Models\\Auth\\DTO\\AuthRequest.cs",
+              "RelativeToolTip": "Models\\Auth\\DTO\\AuthRequest.cs",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA8AAAAiAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2025-03-17T15:02:19.601Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
